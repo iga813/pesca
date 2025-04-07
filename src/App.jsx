@@ -7,7 +7,7 @@ const fetchFishingData = async () => {
     clima: "Soleado",
     temperatura: "18ºC",
     vientoVelocidad: "10 km/h",
-    vientoDireccion: "NE",
+    vientoDireccion: "NE",  
     faseLunar: "Luna creciente",
     probabilidadPesca: "Alta",
     mareas: [
