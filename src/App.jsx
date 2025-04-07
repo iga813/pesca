@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Sun, Moon, Waves, Clock } from "lucide-react";
+import { Sun, Moon, Waves, Clock, Calendar } from "lucide-react";
 
-const fetchFishingData = async () => {
+const fetchFishingData = async (fecha) => {
+  const dia = fecha ? new Date(fecha).toLocaleDateString() : new Date().toLocaleDateString();
   return {
-    fecha: new Date().toLocaleDateString(),
+    fecha: dia,
     clima: "Soleado",
     temperatura: "18ºC",
     vientoVelocidad: "10 km/h",
@@ -28,20 +29,39 @@ const fetchFishingData = async () => {
 
 export default function PaginaPescaCantabria() {
   const [datos, setDatos] = useState(null);
+  const [fechaSeleccionada, setFechaSeleccionada] = useState("");
+
+  const cargarDatos = async (fecha = "") => {
+    const res = await fetchFishingData(fecha);
+    setDatos(res);
+  };
 
   useEffect(() => {
-    const cargarDatos = async () => {
-      const res = await fetchFishingData();
-      setDatos(res);
-    };
     cargarDatos();
   }, []);
+
+  const manejarCambioFecha = (e) => {
+    const fecha = e.target.value;
+    setFechaSeleccionada(fecha);
+    cargarDatos(fecha);
+  };
 
   if (!datos) return <div className="p-4">Cargando datos...</div>;
 
   return (
     <div className="max-w-3xl mx-auto p-4 space-y-4 font-sans">
       <h1 className="text-3xl font-bold text-center">Pesca en Cantabria - {datos.fecha}</h1>
+
+      <div className="flex justify-center items-center space-x-2">
+        <Calendar />
+        <label className="font-semibold">Selecciona un día:</label>
+        <input
+          type="date"
+          value={fechaSeleccionada}
+          onChange={manejarCambioFecha}
+          className="border rounded px-2 py-1"
+        />
+      </div>
 
       <div className="bg-white rounded-xl shadow p-4 flex items-center space-x-4">
         <Sun />
@@ -88,7 +108,7 @@ export default function PaginaPescaCantabria() {
       <div className="bg-white rounded-xl shadow p-4">
         <div className="flex items-center space-x-2">
           <Clock />
-          <p className="font-semibold">Mejores horas para spinning (truchas y delfines):</p>
+          <p className="font-semibold">Mejores horas para spinning (sepia):</p>
         </div>
         <ul className="mt-2 space-y-1">
           {datos.mejoresHorasSpinning.map((hora, idx) => (
@@ -99,10 +119,10 @@ export default function PaginaPescaCantabria() {
 
       <div className="text-center pt-4">
         <button
-          onClick={() => window.location.reload()}
+          onClick={() => cargarDatos(fechaSeleccionada)}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
         >
-          Actualizar datos
+          Actualizar datos del día seleccionado
         </button>
       </div>
     </div>
