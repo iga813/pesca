@@ -29,7 +29,10 @@ const fetchFishingData = async (fecha) => {
 
 export default function PaginaPescaCantabria() {
   const [datos, setDatos] = useState(null);
-  const [fechaSeleccionada, setFechaSeleccionada] = useState("");
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(() => {
+    const hoy = new Date();
+    return hoy.toISOString().split("T")[0];
+  });
 
   const cargarDatos = async (fecha = "") => {
     const res = await fetchFishingData(fecha);
@@ -37,13 +40,12 @@ export default function PaginaPescaCantabria() {
   };
 
   useEffect(() => {
-    cargarDatos();
-  }, []);
+    cargarDatos(fechaSeleccionada);
+  }, [fechaSeleccionada]);
 
   const manejarCambioFecha = (e) => {
     const fecha = e.target.value;
     setFechaSeleccionada(fecha);
-    cargarDatos(fecha);
   };
 
   if (!datos) return <div className="p-4">Cargando datos...</div>;
@@ -108,22 +110,13 @@ export default function PaginaPescaCantabria() {
       <div className="bg-white rounded-xl shadow p-4">
         <div className="flex items-center space-x-2">
           <Clock />
-          <p className="font-semibold">Mejores horas para spinning (trucha y delfin):</p>
+          <p className="font-semibold">Mejores horas para spinning (sepia):</p>
         </div>
         <ul className="mt-2 space-y-1">
           {datos.mejoresHorasSpinning.map((hora, idx) => (
             <li key={idx}>{hora}</li>
           ))}
         </ul>
-      </div>
-
-      <div className="text-center pt-4">
-        <button
-          onClick={() => cargarDatos(fechaSeleccionada)}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Actualizar datos del día seleccionado
-        </button>
       </div>
     </div>
   );
