@@ -108,7 +108,7 @@ export default function PaginaPescaCantabria() {
       <div className="bg-white rounded-xl shadow p-4">
         <div className="flex items-center space-x-2">
           <Clock />
-          <p className="font-semibold">Mejores horas para spinning (sepia):</p>
+          <p className="font-semibold">Mejores horas para spinning (trucha y delfin):</p>
         </div>
         <ul className="mt-2 space-y-1">
           {datos.mejoresHorasSpinning.map((hora, idx) => (
