@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Sun, Moon, Waves, Clock, Calendar } from "lucide-react";
 
 const fetchFishingData = async (fecha) => {
-  const dia = fecha ? new Date(fecha).toLocaleDateString() : new Date().toLocaleDateString();
+  const dia = fecha || new Date().toISOString().split("T")[0];
   return {
-    fecha: dia,
+    fecha: new Date(dia).toLocaleDateString('es-ES'),
     clima: "Soleado",
     temperatura: "18ºC",
     vientoVelocidad: "10 km/h",
@@ -48,9 +48,16 @@ export default function PaginaPescaCantabria() {
 
   if (!datos) return <div className="p-4">Cargando datos...</div>;
 
-  return (
+  const obtenerNombreDia = (fechaISO) => {
+  const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  const fecha = new Date(fechaISO);
+  return dias[fecha.getDay()];
+};
+
+return (
     <div className="max-w-3xl mx-auto p-4 space-y-4 font-sans">
       <h1 className="text-3xl font-bold text-center">Pesca en Cantabria - {datos.fecha}</h1>
+<p className="text-center text-gray-600">{obtenerNombreDia(fechaSeleccionada)}</p>
 
       <div className="flex justify-center items-center space-x-2">
         <Calendar />
