@@ -1,0 +1,80 @@
+import React, { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Sun, Moon, Waves, Wind } from "lucide-react";
+
+const fetchFishingData = async () => {
+  return {
+    fecha: new Date().toLocaleDateString(),
+    clima: "Soleado",
+    temperatura: "18ºC",
+    vientoVelocidad: "10 km/h",
+    vientoDireccion: "NE",
+    faseLunar: "Luna creciente",
+    probabilidadPesca: "Alta",
+    mareas: [
+      { hora: "06:12", tipo: "Bajamar" },
+      { hora: "12:45", tipo: "Pleamar" },
+      { hora: "18:30", tipo: "Bajamar" }
+    ]
+  };
+};
+
+export default function PaginaPescaCantabria() {
+  const [datos, setDatos] = useState(null);
+
+  useEffect(() => {
+    const cargarDatos = async () => {
+      const res = await fetchFishingData();
+      setDatos(res);
+    };
+    cargarDatos();
+  }, []);
+
+  if (!datos) return <div className="p-4">Cargando datos...</div>;
+
+  return (
+    <div className="max-w-3xl mx-auto p-4 space-y-4">
+      <h1 className="text-3xl font-bold text-center">Pesca en Cantabria - {datos.fecha}</h1>
+      <Card>
+        <CardContent className="p-4 flex items-center space-x-4">
+          <Sun />
+          <div>
+            <p className="font-semibold">Clima:</p>
+            <p>{datos.clima} - {datos.temperatura}</p>
+            <p>Viento: {datos.vientoVelocidad} dirección {datos.vientoDireccion}</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4 flex items-center space-x-4">
+          <Moon />
+          <div>
+            <p className="font-semibold">Fase Lunar:</p>
+            <p>{datos.faseLunar}</p>
+            <p>Probabilidad de pesca: {datos.probabilidadPesca}</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex items-center space-x-2">
+            <Waves />
+            <p className="font-semibold">Mareas:</p>
+          </div>
+          <ul className="mt-2 space-y-1">
+            {datos.mareas.map((marea, idx) => (
+              <li key={idx}>{marea.hora} - {marea.tipo}</li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+
+      <div className="text-center pt-4">
+        <Button onClick={() => window.location.reload()}>Actualizar datos</Button>
+      </div>
+    </div>
+  );
+}
