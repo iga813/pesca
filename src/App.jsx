@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Sun, Moon, Waves } from "lucide-react";
+import { Sun, Moon, Waves, Clock } from "lucide-react";
 
 const fetchFishingData = async () => {
   return {
@@ -14,6 +14,14 @@ const fetchFishingData = async () => {
       { hora: "06:12", tipo: "Bajamar" },
       { hora: "12:45", tipo: "Pleamar" },
       { hora: "18:30", tipo: "Bajamar" }
+    ],
+    mejoresHorasSepia: [
+      "Durante subida de marea (entre bajamar y pleamar)",
+      "Durante bajada de marea (entre pleamar y bajamar)"
+    ],
+    mejoresHorasSpinning: [
+      "05:30 - Amanecer (spinning)",
+      "20:30 - Atardecer (spinning)"
     ]
   };
 };
@@ -61,6 +69,30 @@ export default function PaginaPescaCantabria() {
         <ul className="mt-2 space-y-1">
           {datos.mareas.map((marea, idx) => (
             <li key={idx}>{marea.hora} - {marea.tipo}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="bg-white rounded-xl shadow p-4">
+        <div className="flex items-center space-x-2">
+          <Clock />
+          <p className="font-semibold">Mejores horas para pescar sepia (con caña):</p>
+        </div>
+        <ul className="mt-2 space-y-1">
+          {datos.mejoresHorasSepia.map((hora, idx) => (
+            <li key={idx}>{hora}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="bg-white rounded-xl shadow p-4">
+        <div className="flex items-center space-x-2">
+          <Clock />
+          <p className="font-semibold">Mejores horas para spinning (sepia):</p>
+        </div>
+        <ul className="mt-2 space-y-1">
+          {datos.mejoresHorasSpinning.map((hora, idx) => (
+            <li key={idx}>{hora}</li>
           ))}
         </ul>
       </div>
