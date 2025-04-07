@@ -34,19 +34,17 @@ export default function PaginaPescaCantabria() {
     return hoy.toISOString().split("T")[0];
   });
 
-  const cargarDatos = async (fecha = "") => {
-    const res = await fetchFishingData(fecha);
-    setDatos(res);
+  const manejarCambioFecha = (e) => {
+    setFechaSeleccionada(e.target.value);
   };
 
   useEffect(() => {
-    cargarDatos(fechaSeleccionada);
+    const cargarDatos = async () => {
+      const res = await fetchFishingData(fechaSeleccionada);
+      setDatos(res);
+    };
+    cargarDatos();
   }, [fechaSeleccionada]);
-
-  const manejarCambioFecha = (e) => {
-    const fecha = e.target.value;
-    setFechaSeleccionada(fecha);
-  };
 
   if (!datos) return <div className="p-4">Cargando datos...</div>;
 
