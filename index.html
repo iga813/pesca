@@ -1,12 +1,44 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Pesca en Cantabria</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html>
+<head>
+  <title>Mapa OpenStreetMap con Leaflet</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Cargar Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+SkQXG9CJyW6zWGyXszA6KNGPnnI5LB+H4gO4p4lg="
+    crossorigin=""/>
+  
+  <!-- Cargar Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o0zi9TFLieRcih2vRPO98c70dhW6xoGf+jmw5/sAdhc="
+    crossorigin=""></script>
+  
+  <style>
+    #map { height: 100vh; width: 100vw; margin: 0; padding: 0; }
+    body, html { margin: 0; padding: 0; height: 100%; }
+  </style>
+</head>
+<body>
+  
+  <div id="map"></div>
+
+  <script>
+    // Crear el mapa y centrarlo en coordenadas iniciales (ejemplo: Madrid)
+    var map = L.map('map').setView([40.4168, -3.7038], 13);
+    
+    // Cargar las baldosas (tiles) de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // Añadir un marcador
+    L.marker([40.4168, -3.7038]).addTo(map)
+      .bindPopup('¡Hola desde Madrid!')
+      .openPopup();
+  </script>
+  
+</body>
 </html>
